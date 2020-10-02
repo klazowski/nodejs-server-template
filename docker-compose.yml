@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  app:
+    image: node:12-alpine
+    #    command: sh -c "npm i && npm run start-dev"
+    command: sh -c "npm i &&npm run build && npm run start"
+    ports:
+      - 5001:5001
+    working_dir: /app
+    volumes:
+      - ./:/app
+    environment:
+      PORT: 5001
+      MYSQL_ROOT_PASSWORD: secret
+
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - app-mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: app
+
+volumes:
+  - app-mysql-data:
